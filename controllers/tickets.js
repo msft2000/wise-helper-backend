@@ -35,11 +35,11 @@ const getSingleTicket = async (req, res) => {
 
 const addMensajeUsuario = async (req, res) => {
     const { idTicket, texto } = req.body;
-    const ticket = await Ticket.findOne({ _id: idTicket });
+    const ticket = await TicketSoporte.findOne({ _id: idTicket });
     if (!ticket) {
         throw new NotFoundError(`No se encontro ticket con id ${idTicket}`);
     }
-    const addUserMessage = await Ticket.addMensajeUsuario({ texto });
+    const addUserMessage = await ticket.addMensajeUsuario({ texto });
     if (!addUserMessage) {
         throw new BadRequestError(`No se pudo enviar el mensaje`);
     }
@@ -48,11 +48,11 @@ const addMensajeUsuario = async (req, res) => {
 
 const addAdminMessage = async (req, res) => {
     const { idTicket, texto } = req.body;
-    const ticket = await Ticket.findOne({ _id: idTicket });
+    const ticket = await TicketSoporte.findOne({ _id: idTicket });
     if (!ticket) {
         throw new NotFoundError(`No se encontro ticket con id ${idTicket}`);
     }
-    const addAdminMessage = await Ticket.addMensajeAdmin({ texto });
+    const addAdminMessage = await ticket.addMensajeAdmin({ texto }).sort();
     if (!addAdminMessage) {
         throw new BadRequestError(`No se pudo enviar el mensaje`);
     }

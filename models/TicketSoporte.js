@@ -25,7 +25,6 @@ const TicketSoporteSchema = new mongoose.Schema(
     },
     id_admin: {
       type: String,
-      required: [true, "Por favor ingrese un id de admin"],
       trim: true,
     },
     mensajes_usuario: [
@@ -35,9 +34,10 @@ const TicketSoporteSchema = new mongoose.Schema(
           required: [true, "Por favor ingrese un texto"],
           trim: true,
         },
-      },
-      {
-        timestamps: true,
+        date: {
+          type: Date,
+          default: () => new Date(+new Date())
+        }
       },
     ],
     mensajes_admin: [
@@ -47,10 +47,11 @@ const TicketSoporteSchema = new mongoose.Schema(
           required: [true, "Por favor ingrese un texto"],
           trim: true,
         },
-      },
-      {
-        timestamps: true,
-      },
+        date: {
+          type: Date,
+          default: () => new Date(+new Date())
+        }
+      }
     ],
   },
   {
