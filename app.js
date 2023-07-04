@@ -17,6 +17,7 @@ const authenticateUser = require("./middleware/authentication");
 // routes
 const authRoutes = require("./routes/auth");
 const tareasRoutes = require("./routes/tareas");
+const ticketRoutes = require("./routes/tickets");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 // routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/tareas", authenticateUser, tareasRoutes);
+app.use("/api/v1/tickets", authenticateUser, ticketRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
