@@ -7,7 +7,7 @@ const createTarea = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ tarea });
 }
 
-const updateTarea = async (req, res) => {
+const addVoluntario = async (req, res) => {
     const { idTarea:_id,id_voluntario } = req.body;
     if(!_id || !id_voluntario){
         throw new BadRequestError("No se proporciono todos los id's");
@@ -39,7 +39,7 @@ const getSingleTarea = async (req, res) => {
 
 module.exports = {
     createTarea,
-    updateTarea,
+    addVoluntario,
     getTareasByUser,
     getSingleTarea
 }
