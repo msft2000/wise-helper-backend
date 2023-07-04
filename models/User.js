@@ -11,7 +11,6 @@ const UserSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: [true, "Por favor ingrese un nombre"],
-        trim: true,
         minlength: [3, "El nombre al menos debe tener 3 caracteres"],
         maxlength: [
             50,
@@ -21,7 +20,6 @@ const UserSchema = new mongoose.Schema({
     apellidos: {
         type: String,
         required: [true, "Por favor ingrese un apellido"],
-        trim: true,
         minlength: [3, "El apellido al menos debe tener 3 caracteres"],
         maxlength: [
             50,
@@ -45,40 +43,38 @@ const UserSchema = new mongoose.Schema({
     direccion: {
         type: String,
         required: [true, "Por favor ingrese una direccion"],
-        trim: true,
         minlength: [3, "La direccion al menos debe tener 3 caracteres"],
     },
     edad: {
         type: Number,
         required: [true, "Por favor ingrese una edad"],
-        trim: true,
     },
     descripcion: {
         type: String,
         required: [true, "Por favor ingrese una descripcion"],
-        trim: true,
     },
     calificacion_general: {
         type: Number,
-        required: [true, "Por favor ingrese una calificacion general"],
-        trim: true,
+        default: 0
     },
     tipo: {
         type: String,
         required: [true, "Por favor ingrese un tipo"],
-        trim: true,
         enum: ["adulto_mayor", "voluntario" , "admin"]
     },
     img : {
         type: String,
         default : "https://res.cloudinary.com/dj4ahbiqh/image/upload/v1688394029/UsuarioDefault.jpg"
     },
+    token_chat: {
+        type: String,
+        required: [true, "Por favor ingrese un token de chat"]
+    },
     calificaciones: [
         {
             id_origen: {
                 type: String,
                 required: [true, "Por favor ingrese un id de voluntario"],
-                trim: true,
                 unique: true
             },
             calificacion: {
@@ -97,12 +93,12 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre("save", async function () {
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.contrasenia = await bcrypt.hash(this.contrasenia, salt);
 });
 
 UserSchema.methods.createJWT = function () {
     return jwt.sign(
-        { userID: this._id, name: this.name },
+        { userID: this._id, nombre: this.nombre },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_LIFETIME,
@@ -110,20 +106,21 @@ UserSchema.methods.createJWT = function () {
     );
 };
 
-UserSchema.methods.comparePasswords = async function (password) {
-    const isMatch = await bcrypt.compare(password, this.password);
+UserSchema.methods.comparePasswords = async function (contrasenia) {
+    const isMatch = await bcrypt.compare(contrasenia, this.contrasenia);
     return isMatch;
 };
-
-// UserSchema.pre("save", async function () {
-//     let calificaciones = this.calificaciones;
-//     let promedio = 0;
-//     for (let i = 0; i < calificaciones.length; i++) {
-//         promedio += calificaciones[i].calificacion;
-//     }
-//     promedio = promedio / calificaciones.length;
-//     this.calificacion_general = promedio;
-// });
+UserSchema.methods.addCalificacion = async function (calificacion) {
+    this.calificaciones.push(calificacion);
+    let promedio = 0;
+    for (let i = 0; i < this.calificaciones.length; i++) {
+        promedio += this.calificaciones[i].calificacion;
+    }
+    promedio = promedio / this.calificaciones.length;
+    this.calificacion_general = promedio;
+    await this.save();
+    return this;
+};
 
 module.exports = mongoose.model("Usuarios", UserSchema);
 

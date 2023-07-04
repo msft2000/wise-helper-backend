@@ -46,6 +46,11 @@ const TareaSchema = new mongoose.Schema(
       required: [true, "Por favor ingrese un id de adulto mayor"],
       trim: true,
     },
+    id_chat: {
+      type: String,
+      required: [true, "Por favor ingrese un id de chat"],
+      trim: true,
+    }
   },
   {
     timestamps: true,

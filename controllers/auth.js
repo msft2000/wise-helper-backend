@@ -6,57 +6,50 @@ const register = async (req, res) => {
     const user = await User.create({ ...req.body });
     const token = user.createJWT();
     res.status(StatusCodes.CREATED).json({
-        user: { name: user.name },
-        token,
+        user,
+        token
     });
 };
 const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { email, contrasenia } = req.body;
+    if (!email || !contrasenia) {
         throw new BadRequestError("Porfavor ingrese email y password");
     }
     const user = await User.findOne({ email });
     if (!user) {
         throw new UnauthenticatedError("Credenciales invalidas");
     }
-    const isPasswordCorrect = await user.comparePasswords(password);
+    const isPasswordCorrect = await user.comparePasswords(contrasenia);
     if (!isPasswordCorrect) {
         throw new UnauthenticatedError("Credenciales invalidas");
     }
     const token = user.createJWT();
     res.status(StatusCodes.OK).json({
-        user: { name: user.name },
-        token,
+        user,
+        token
     });
 };
 
 const getSingleUser = async (req, res) => {
-    const { id } = req.body;
-    const user = User.findOne({ _id: id });
+    const userID = req.body.userID;
+    const user = await User.findOne({ _id: userID });
     if (!user) {
-        throw new NotFoundError(`No se encontro usuario con id ${id}`);
+        throw new NotFoundError(`No se encontro usuario con id ${userID}`);
     }
     res.status(StatusCodes.OK).json({ user });
 };
 
 const agregateCalificacion = async (req, res) => {
     const { id_destino, id_origen, calificacion, comentario } = req.body;
-    const user = await User.findAndUpdate(
-        { _id: id_destino },
-        {
-            $push: {
-                calificaciones: {
-                    id_origen: id_origen,
-                    calificacion: calificacion,
-                    comentario: comentario,
-                },
-            },
-        }
-    )
+    const user = await User.findOne({ _id: id_destino });
     if (!user) {
         throw new NotFoundError(`No se encontro usuario con id ${id}`);
     }
-    res.status(StatusCodes.OK).json({ user });
+    const agregarCalificacion = await user.addCalificacion({ id_origen, calificacion, comentario });
+    if (!agregarCalificacion) {
+        throw new BadRequestError(`No se pudo agregar calificacion`);
+    }
+    res.status(StatusCodes.OK).json({ agregarCalificacion });
 };
 
 module.exports = {

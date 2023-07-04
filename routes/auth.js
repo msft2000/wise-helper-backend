@@ -10,6 +10,6 @@ const {
 router.post("/register", register);
 router.post("/login", login);
 router.get("/user", getSingleUser);
-router.patch("/calificacion", agregateCalificacion);
+router.post("/calificacion", agregateCalificacion);
 
 module.exports = router;
