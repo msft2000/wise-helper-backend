@@ -8,7 +8,7 @@ const {
 } = require("../controllers/tareas");
 router.post("/create", createTarea);
 router.patch("/add-voluntario", addVoluntario);
-router.get("/getTareasByUser", getTareasByUser);
-router.get("/getSingleTarea", getSingleTarea);
+router.get("/get-tareas-by-user", getTareasByUser);
+router.get("/get-single-tarea", getSingleTarea);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const addVoluntario = async (req, res) => {
     if(!_id || !id_voluntario){
         throw new BadRequestError("No se proporciono todos los id's");
     }
-    const tarea = await Tareas.findOneAndUpdate({ _id, id_voluntario }, { ...req.body }, { new: true, runValidators: true });
+    const tarea = await Tareas.findOneAndUpdate({ _id }, { id_voluntario }, { new: true, runValidators: true });
     if(!tarea){
         throw new NotFoundError(`No se encontro tarea con id ${_id}`);
     }
@@ -20,8 +20,8 @@ const addVoluntario = async (req, res) => {
 }
 
 const getTareasByUser = async (req, res) => {
-    const { id, tipo } = req.body;
-    const tareas = await Tareas.find({ _id: id, tipo:tipo }).sort('createdAt');
+    const { id, estado } = req.body;
+    const tareas = await Tareas.find({ id_adulto_mayor: id, estado}).sort('createdAt');
     if(!tareas){
         throw new NotFoundError(`No se encontraron tareas para el usuario con id ${id}`);
     }
