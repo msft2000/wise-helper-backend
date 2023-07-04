@@ -12,10 +12,6 @@ const TareaSchema = new mongoose.Schema(
       required: [true, "Por favor ingrese una descripcion"],
       trim: true,
     },
-    fecha_publicacion: {
-      type: Date,
-      required: [true, "Por favor ingrese una fecha de publicacion"],
-    },
     fecha_limite: {
       type: Date,
       required: [true, "Por favor ingrese una fecha limite"],
@@ -38,7 +34,6 @@ const TareaSchema = new mongoose.Schema(
     },
     id_voluntario: {
       type: String,
-      required: [true, "Por favor ingrese un id de voluntario"],
       trim: true,
     },
     id_adulto_mayor: {

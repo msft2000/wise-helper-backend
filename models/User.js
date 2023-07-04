@@ -106,8 +106,8 @@ UserSchema.methods.createJWT = function () {
     );
 };
 
-UserSchema.methods.comparePasswords = async function (contrasenia) {
-    const isMatch = await bcrypt.compare(contrasenia, this.contrasenia);
+UserSchema.methods.comparePasswords = async function (posiblePassword) {
+    const isMatch = await bcrypt.compare(posiblePassword, this.contrasenia);
     return isMatch;
 };
 UserSchema.methods.addCalificacion = async function (calificacion) {
