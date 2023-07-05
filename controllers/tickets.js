@@ -8,7 +8,7 @@ const createTicket = async (req, res) => {
 }
 
 const getTicketsByUser = async (req, res) => {
-    const userID = req.body.userID;
+    const {id: userID} = req.params;
     const tickets = await TicketSoporte.find({ id_usuario: userID });
     if (!tickets) {
         throw new NotFoundError(`No se encontro tickets con id ${userID}`);
@@ -25,7 +25,7 @@ const getTicketsByAdmin = async (req, res) => {
 }
 
 const getSingleTicket = async (req, res) => {
-    const ticketID = req.body.ticketID;
+    const { id: ticketID } = req.params;
     const ticket = await TicketSoporte.findOne({ _id: ticketID });
     if (!ticket) {
         throw new NotFoundError(`No se encontro ticket con id ${ticketID}`);
