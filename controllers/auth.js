@@ -52,9 +52,26 @@ const agregateCalificacion = async (req, res) => {
     res.status(StatusCodes.OK).json({ agregarCalificacion });
 };
 
+const updateUser = async (req, res) => {
+    const {
+        params: { id: _id },
+      } = req;
+      if (Object.keys(req.body).length === 0) {
+        throw new BadRequestError("Debe ingresar datos para actualizar");
+      }
+      const user = await User.findByIdAndUpdate({ _id }, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      if (!user) {
+        throw new NotFoundError(`No se encontro un usuario con id ${_id}`);
+      }
+      res.status(StatusCodes.OK).json({ user });
+}
 module.exports = {
     register,
     login,
     getSingleUser,
-    agregateCalificacion
+    agregateCalificacion,
+    updateUser
 };
