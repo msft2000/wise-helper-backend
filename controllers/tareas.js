@@ -7,6 +7,11 @@ const createTarea = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ tarea });
 };
 
+const getAllTareas = async (req, res) => {
+  const tareas = await Tareas.find({}).sort("createdAt");
+  res.status(StatusCodes.OK).json({ tareas, count: tareas.length });
+}
+
 const addVoluntario = async (req, res) => {
   const { idTarea: _id, id_voluntario } = req.body;
   if (!_id || !id_voluntario) {
@@ -24,14 +29,17 @@ const addVoluntario = async (req, res) => {
 };
 
 const getTareasByUser = async (req, res) => {
-  const { id, estado } = req.body;
-  const tareas = await Tareas.find({ id_adulto_mayor: id, estado }).sort(
+  const { id } = req.body;
+  let tareas = await Tareas.find({ id_adulto_mayor: id }).sort(
     "createdAt"
   );
   if (!tareas) {
-    throw new NotFoundError(
-      `No se encontraron tareas para el usuario con id ${id}`
+    tareas = await Tareas.find({ id_voluntario: id }).sort(
+      "createdAt"
     );
+    if (!tareas) {
+      throw new NotFoundError(`No se encontro tareas para el usuario con el id ${id}`);
+    }
   }
   res.status(StatusCodes.OK).json({ tareas, count: tareas.length });
 };
@@ -67,5 +75,6 @@ module.exports = {
   addVoluntario,
   getTareasByUser,
   getSingleTarea,
-  updateTarea
+  updateTarea,
+  getAllTareas
 };
