@@ -70,11 +70,23 @@ const updateTarea = async (req, res) => {
   res.status(StatusCodes.OK).json({ tarea });
 };
 
+const deleteTarea = async (req, res) => {
+  const {
+    params: { id: _id },
+  } = req;
+  const tarea = await Tareas.findByIdAndRemove(_id);
+  if (!tarea) {
+    throw new NotFoundError(`No se encontro tarea con id ${_id}`);
+  }
+  res.status(StatusCodes.OK).send({ tarea });
+};
+
 module.exports = {
   createTarea,
   addVoluntario,
   getTareasByUser,
   getSingleTarea,
   updateTarea,
-  getAllTareas
+  getAllTareas,
+  deleteTarea
 };
