@@ -5,9 +5,11 @@ const {
   login,
   getSingleUser,
   agregateCalificacion,
+  updateUser,
   deleteUser
 } = require("../controllers/auth");
 
+router.patch("/update/:id", updateUser);
 router.post("/register", register);
 router.post("/login", login);
 router.get("/user", getSingleUser);

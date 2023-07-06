@@ -1,11 +1,17 @@
 require("dotenv").config();
 require("express-async-errors");
 
+
 // Extra security packages
 const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
+
+//Swagger
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./WISEHELPER.yml");
 
 const express = require("express");
 const app = express();
@@ -38,8 +44,10 @@ app.use(cors());
 app.use(xss());
 
 app.get("/", (req, res) => {
-    res.send("<h1>Wise Helper API</h1>");
+    res.send("<h1>Wise Helper API</h1> <a href='/api-docs'>Documentation</a>");
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes
 app.use("/api/v1/auth", authRoutes);

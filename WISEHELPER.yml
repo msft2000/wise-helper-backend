@@ -1,0 +1,620 @@
+openapi: 3.0.0
+info:
+  title: WISE-HELPER
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://wise-helper-backend.onrender.com/api/v1
+  variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Usuario
+      summary: Register
+      operationId: Register
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterRequest'
+              - example:
+                  cedula: '0105599973'
+                  nombre: Mateo
+                  apellidos: Flores Terreros
+                  email: prueba3@ejemplo.com
+                  contrasenia: password
+                  direccion: Retorno 2
+                  edad: '22'
+                  descripcion: loca la muchacha
+                  tipo: adulto_mayor
+                  token_chat: '123'
+            example:
+              cedula: '0105599973'
+              nombre: Mateo
+              apellidos: Flores Terreros
+              email: prueba3@ejemplo.com
+              contrasenia: password
+              direccion: Retorno 2
+              edad: '22'
+              descripcion: loca la muchacha
+              tipo: adulto_mayor
+              token_chat: '123'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/update/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: The user ID
+    patch:
+      tags:
+      - Usuario
+      summary: Actualizar Un Usuario
+      operationId: ActualizarUnUsuario
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateUsuarioRequest'
+              - example:
+                  nombre: Cambiado1
+            example:
+              nombre: Cambiado1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - Usuario
+      summary: Login
+      operationId: Login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginRequest'
+              - example:
+                  email: prueba@ejemplo.com
+                  contrasenia: password
+            example:
+              email: prueba@ejemplo.com
+              contrasenia: password
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/user:
+    get:
+      tags:
+      - Usuario
+      summary: GetSingleUser
+      operationId: GetSingleUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/calificacion:
+    post:
+      tags:
+      - Usuario
+      summary: Agregar Calificacion A Un Usuario
+      operationId: AgregarCalificacionAUnUsuario
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AgregateCalificacionRequest'
+              - example:
+                  id_destino: 64a4397a1195856943dd6fc3
+                  id_origen: 64a439931195856943dd6fc5
+                  calificacion: '3.7'
+                  comentario: Prueba numero 1
+            example:
+              id_destino: 64a4397a1195856943dd6fc3
+              id_origen: 64a439931195856943dd6fc5
+              calificacion: '3.7'
+              comentario: Prueba numero 1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /tareas/create:
+    post:
+      tags:
+      - Tareas
+      summary: Crear Una Tarea
+      operationId: CrearUnaTarea
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateTareaRequest'
+              - example:
+                  titulo: Tarea Prueba
+                  descripcion: Descripcion prueba
+                  fecha_limite: 2023-04-12T12:45:42.389Z
+                  duracion: 2h30min
+                  estado: Activa
+                  ubicacion: Ubicacion prueba
+                  id_adulto_mayor: 64a4397a1195856943dd6fc3
+                  id_chat: chat1
+            example:
+              titulo: Tarea Prueba
+              descripcion: Descripcion prueba
+              fecha_limite: 2023-04-12T12:45:42.389Z
+              duracion: 2h30min
+              estado: Activa
+              ubicacion: Ubicacion prueba
+              id_adulto_mayor: 64a4397a1195856943dd6fc3
+              id_chat: chat1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tareas/add-voluntario:
+    patch:
+      tags:
+      - Tareas
+      summary: Agregar Voluntario A Una Tarea
+      operationId: AgregarVoluntarioAUnaTarea
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddVoluntarioToTaskRequest'
+              - example:
+                  idTarea: 64a43a051195856943dd6fca
+                  id_voluntario: 64a439931195856943dd6fc5
+            example:
+              idTarea: 64a43a051195856943dd6fca
+              id_voluntario: 64a439931195856943dd6fc5
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tareas/update/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: El ID de la Tarea
+    patch:
+      tags:
+      - Tareas
+      summary: Actualizar Una Tarea
+      operationId: ActualizarUnaTarea
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateTareaRequest'
+              - example:
+                  titulo: Titulo Cambiado 1
+            example:
+              titulo: Titulo Cambiado 1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tareas/get-tareas-by-user:
+    get:
+      tags:
+      - Tareas
+      summary: Obtener Las Tareas De Un Usuario
+      operationId: ObtenerLasTareasDeUnUsuario
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tareas/get-single-tarea:
+    get:
+      tags:
+      - Tareas
+      summary: Obtener Una Sola Tarea
+      operationId: ObtenerUnaSolaTarea
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tickets/create:
+    post:
+      tags:
+      - Ticket
+      summary: Crear Un Ticket
+      operationId: CrearUnTicket
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateTicketRequest'
+              - example:
+                  titulo: Ticket 1
+                  descripcion: Descripcion 1
+                  estado: Activo
+                  id_usuario: 64a439931195856943dd6fc5
+            example:
+              titulo: Ticket 1
+              descripcion: Descripcion 1
+              estado: Activo
+              id_usuario: 64a439931195856943dd6fc5
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tickets/add-mensaje-usuario:
+    patch:
+      tags:
+      - Ticket
+      summary: Enviar Un Mensaje - Usuario
+      operationId: EnviarUnMensaje-Usuario
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddMensajeUsuarioRequest'
+              - example:
+                  idTicket: 64a45989635a46d684c0d032
+                  texto: Hola como va mi rey
+            example:
+              idTicket: 64a45989635a46d684c0d032
+              texto: Hola como va mi rey
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tickets/get-tickets-by-user/{id}:
+    parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The user ID
+    get:
+      tags:
+      - Ticket
+      summary: Obtener Ticket Por Usuario
+      operationId: ObtenerTicketPorUsuario
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tickets/get-tickets-by-admin:
+    get:
+      tags:
+      - Ticket
+      summary: Obtener Tickets Para El Admin
+      operationId: ObtenerTicketsParaElAdmin
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /tickets/get-single-ticket/{id}:
+    parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The ticket ID
+    get:
+      tags:
+      - Ticket
+      summary: Obtener Datos De Un Ticket
+      operationId: ObtenerDatosDeUnTicket
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+components:
+  schemas:
+    RegisterRequest:
+      title: RegisterRequest
+      required:
+      - cedula
+      - nombre
+      - apellidos
+      - email
+      - contrasenia
+      - direccion
+      - edad
+      - descripcion
+      - tipo
+      - token_chat
+      type: object
+      properties:
+        cedula:
+          type: string
+        nombre:
+          type: string
+        apellidos:
+          type: string
+        email:
+          type: string
+        contrasenia:
+          type: string
+        direccion:
+          type: string
+        edad:
+          type: string
+        descripcion:
+          type: string
+        tipo:
+          type: string
+        token_chat:
+          type: string
+      example:
+        cedula: '0105599973'
+        nombre: Mateo
+        apellidos: Flores Terreros
+        email: prueba3@ejemplo.com
+        contrasenia: password
+        direccion: Retorno 2
+        edad: '22'
+        descripcion: loca la muchacha
+        tipo: adulto_mayor
+        token_chat: '123'
+    CreateTareaRequest:
+      title: CreateTareaRequest
+      required:
+      - titulo
+      - descripcion
+      - fecha_limite
+      - duracion
+      - estado
+      - ubicacion
+      - id_adulto_mayor
+      - id_chat
+      type: object
+      properties:
+        titulo:
+          type: string
+        descripcion:
+          type: string
+        fecha_limite:
+          type: string
+        duracion:
+          type: string
+        estado:
+          type: string
+        ubicacion:
+          type: string
+        id_adulto_mayor:
+          type: string
+        id_chat:
+          type: string
+      example:
+        titulo: Tarea Prueba
+        descripcion: Descripcion prueba
+        fecha_limite: 2023-04-12T12:45:42.389Z
+        duracion: 2h30min
+        estado: Activa
+        ubicacion: Ubicacion prueba
+        id_adulto_mayor: 64a4397a1195856943dd6fc3
+        id_chat: chat1
+    AddVoluntarioToTaskRequest:
+      title: AddVoluntarioToTaskRequest
+      required:
+      - idTarea
+      - id_voluntario
+      type: object
+      properties:
+        idTarea:
+          type: string
+        id_voluntario:
+          type: string
+      example:
+        idTarea: 64a43a051195856943dd6fca
+        id_voluntario: 64a439931195856943dd6fc5
+    UpdateTareaRequest:
+      title: UpdateTareaRequest
+      required:
+      - titulo
+      type: object
+      properties:
+        titulo:
+          type: string
+      example:
+        titulo: Titulo Cambiado 1
+    UpdateUsuarioRequest:
+      title: UpdateUsuarioRequest
+      required:
+      - nombre
+      type: object
+      properties:
+        nombre:
+          type: string
+      example:
+        nombre: Cambiado1
+    CreateTicketRequest:
+      title: CreateTicketRequest
+      required:
+      - titulo
+      - descripcion
+      - estado
+      - id_usuario
+      type: object
+      properties:
+        titulo:
+          type: string
+        descripcion:
+          type: string
+        estado:
+          type: string
+        id_usuario:
+          type: string
+      example:
+        titulo: Ticket 1
+        descripcion: Descripcion 1
+        estado: Activo
+        id_usuario: 64a439931195856943dd6fc5
+    AddMensajeUsuarioRequest:
+      title: AddMensajeUsuarioRequest
+      required:
+      - idTicket
+      - texto
+      type: object
+      properties:
+        idTicket:
+          type: string
+        texto:
+          type: string
+      example:
+        idTicket: 64a45989635a46d684c0d032
+        texto: Hola como va mi rey
+    AddMensajeAdminRequest:
+      title: AddMensajeAdminRequest
+      required:
+      - idTicket
+      - texto
+      type: object
+      properties:
+        idTicket:
+          type: string
+        texto:
+          type: string
+      example:
+        idTicket: 64a45989635a46d684c0d032
+        texto: Bien mi king
+    LoginRequest:
+      title: LoginRequest
+      required:
+      - email
+      - contrasenia
+      type: object
+      properties:
+        email:
+          type: string
+        contrasenia:
+          type: string
+      example:
+        email: prueba@ejemplo.com
+        contrasenia: password
+    AgregateCalificacionRequest:
+      title: AgregateCalificacionRequest
+      required:
+      - id_destino
+      - id_origen
+      - calificacion
+      - comentario
+      type: object
+      properties:
+        id_destino:
+          type: string
+        id_origen:
+          type: string
+        calificacion:
+          type: string
+        comentario:
+          type: string
+      example:
+        id_destino: 64a4397a1195856943dd6fc3
+        id_origen: 64a439931195856943dd6fc5
+        calificacion: '3.7'
+        comentario: Prueba numero 1
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Misc
+  description: ''
+- name: Usuario
+  description: ''
+- name: Tareas
+  description: ''
+- name: Ticket
+  description: ''

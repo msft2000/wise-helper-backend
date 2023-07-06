@@ -10,9 +10,9 @@ const {
 } = require("../controllers/tickets");
 
 router.post("/create", createTicket);
-router.get("/get-tickets-by-user", getTicketsByUser);
+router.get("/get-tickets-by-user/:id", getTicketsByUser);
 router.get("/get-tickets-by-admin", getTicketsByAdmin);
-router.get("/get-single-ticket", getSingleTicket);
+router.get("/get-single-ticket/:id", getSingleTicket);
 router.patch("/add-mensaje-usuario", addMensajeUsuario);
 router.patch("/add-mensaje-admin", addAdminMessage);
 
