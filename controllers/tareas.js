@@ -29,7 +29,7 @@ const addVoluntario = async (req, res) => {
 };
 
 const getTareasByUser = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   let tareas = await Tareas.find({ id_adulto_mayor: id }).sort(
     "createdAt"
   );
