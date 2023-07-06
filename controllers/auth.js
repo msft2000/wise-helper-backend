@@ -52,9 +52,20 @@ const agregateCalificacion = async (req, res) => {
     res.status(StatusCodes.OK).json({ agregarCalificacion });
 };
 
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    const user =  await User.findByIdAndRemove(id);
+    if (!user) {
+        throw new NotFoundError(`No se encontro usuario con id ${id}`);
+    }
+    res.status(StatusCodes.OK).send();
+};
+
+
 module.exports = {
     register,
     login,
     getSingleUser,
-    agregateCalificacion
+    agregateCalificacion,
+    deleteUser
 };
