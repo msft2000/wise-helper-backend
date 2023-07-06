@@ -82,6 +82,11 @@ const deleteUser = async (req, res) => {
   res.status(StatusCodes.OK).send({ user });
 };
 
+const getAllUsers = async (req, res) => {
+  const users = await User.find({});
+  res.status(StatusCodes.OK).json({ users });
+};
+
 module.exports = {
   register,
   login,
@@ -89,4 +94,5 @@ module.exports = {
   agregateCalificacion,
   updateUser,
   deleteUser,
+  getAllUsers,
 };

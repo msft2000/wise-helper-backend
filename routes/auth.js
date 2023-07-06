@@ -6,7 +6,8 @@ const {
   getSingleUser,
   agregateCalificacion,
   updateUser,
-  deleteUser
+  deleteUser,
+  getAllUsers,
 } = require("../controllers/auth");
 
 router.patch("/update/:id", updateUser);
@@ -15,5 +16,6 @@ router.post("/login", login);
 router.get("/user", getSingleUser);
 router.post("/calificacion", agregateCalificacion);
 router.delete("/delete/:id", deleteUser);
+router.get("/all", getAllUsers);
 
 module.exports = router;
