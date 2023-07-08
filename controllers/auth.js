@@ -53,7 +53,7 @@ const agregateCalificacion = async (req, res) => {
   if (!agregarCalificacion) {
     throw new BadRequestError(`No se pudo agregar calificacion`);
   }
-  res.status(StatusCodes.OK).json({ agregarCalificacion });
+  res.status(StatusCodes.OK).json({ user:agregarCalificacion });
 };
 
 const updateUser = async (req, res) => {
