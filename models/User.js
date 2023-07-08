@@ -119,7 +119,6 @@ UserSchema.methods.addCalificacion = async function (calificacion) {
     }
     promedio = promedio / this.calificaciones.length;
     this.calificacion_general = promedio;
-    await this.save();
     return this;
 };
 
