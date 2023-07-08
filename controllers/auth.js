@@ -41,7 +41,7 @@ const getSingleUser = async (req, res) => {
 
 const agregateCalificacion = async (req, res) => {
   const { id_destino, id_origen, calificacion, comentario } = req.body;
-  const user = await User.findOneAndUpdate({ _id: id_destino }, { $push: { calificaciones: { id_origen, calificacion, comentario } } }, { new: true, runValidators: true });
+  const user = await User.findOneAndUpdate({ _id: id_destino }, { $push: { calificaciones: { id_origen, calificacion, comentario } } });
   if (!user) {
     throw new NotFoundError(`No se pudo agregar el comentario intente denuevo`);
   }
