@@ -108,18 +108,7 @@ UserSchema.methods.createJWT = function () {
 
 UserSchema.methods.comparePasswords = async function (posiblePassword) {      
     const isMatch = await bcrypt.compare(posiblePassword, this.contrasenia);
-    
     return isMatch;
-};
-UserSchema.methods.addCalificacion = async function (calificacion) {
-    this.calificaciones.push(calificacion);
-    let promedio = 0;
-    for (let i = 0; i < this.calificaciones.length; i++) {
-        promedio += this.calificaciones[i].calificacion;
-    }
-    promedio = promedio / this.calificaciones.length;
-    this.calificacion_general = promedio;
-    return this;
 };
 
 module.exports = mongoose.model("Usuarios", UserSchema);

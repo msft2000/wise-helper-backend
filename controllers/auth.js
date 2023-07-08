@@ -41,19 +41,11 @@ const getSingleUser = async (req, res) => {
 
 const agregateCalificacion = async (req, res) => {
   const { id_destino, id_origen, calificacion, comentario } = req.body;
-  const user = await User.findOne({ _id: id_destino });
+  const user = await User.findOneAndUpdate({ _id: id_destino }, { $push: { calificaciones: { id_origen, calificacion, comentario } } }, { new: true, runValidators: true });
   if (!user) {
-    throw new NotFoundError(`No se encontro usuario con id ${id}`);
+    throw new NotFoundError(`No se pudo agregar el comentario intente denuevo`);
   }
-  const agregarCalificacion = await user.addCalificacion({
-    id_origen,
-    calificacion,
-    comentario,
-  });
-  if (!agregarCalificacion) {
-    throw new BadRequestError(`No se pudo agregar calificacion`);
-  }
-  res.status(StatusCodes.OK).json({ user:agregarCalificacion });
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const updateUser = async (req, res) => {
