@@ -31,8 +31,8 @@ const login = async (req, res) => {
 };
 
 const getSingleUser = async (req, res) => {
-  const userID = req.body.userID;
-  const user = await User.findOne({ _id: userID });
+  const { id } = req.params;
+  const user = await User.findOne({ _id: id });
   if (!user) {
     throw new NotFoundError(`No se encontro usuario con id ${userID}`);
   }
