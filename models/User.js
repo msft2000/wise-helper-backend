@@ -75,7 +75,6 @@ const UserSchema = new mongoose.Schema({
             id_origen: {
                 type: String,
                 required: [true, "Por favor ingrese un id de voluntario"],
-                unique: true
             },
             calificacion: {
                 type: Number,
