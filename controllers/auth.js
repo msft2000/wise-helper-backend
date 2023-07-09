@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Tarea = require("../models/Tarea");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
@@ -68,9 +69,16 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   const user = await User.findByIdAndRemove(id);
-  if (!user) {
-    throw new NotFoundError(`No se encontro usuario con id ${id}`);
+  // if (!user) {
+  //   throw new NotFoundError(`No se encontro usuario con id ${id}`);
+  // }
+  if(user.tipo === 'adulto_mayor'){
+    const tareas = await Tarea.find({ id_adulto_mayor: id });
+    if (tareas.length > 0) {
+      await Tarea.deleteMany({ id_adulto_mayor: id });
+    }
   }
+  
   res.status(StatusCodes.OK).send({ user });
 };
 
