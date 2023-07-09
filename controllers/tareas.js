@@ -30,10 +30,11 @@ const addVoluntario = async (req, res) => {
 
 const getTareasByUser = async (req, res) => {
   const { id } = req.params;
+  const {tipo } = req.body;
   let tareas = await Tareas.find({ id_adulto_mayor: id }).sort(
     "createdAt"
   );
-  if (!tareas) {
+  if (tipo=="voluntario") {
     tareas = await Tareas.find({ id_voluntario: id }).sort(
       "createdAt"
     );
