@@ -29,19 +29,22 @@ const addVoluntario = async (req, res) => {
 };
 
 const getTareasByUser = async (req, res) => {
-  const { id } = req.params;
-  let tareas = await Tareas.find({ id_adulto_mayor: id }).sort(
-    "createdAt"
-  );
-  if (!tareas) {
-    tareas = await Tareas.find({ id_voluntario: id }).sort(
+  const { id,tipo } = req.params;
+  if(tipo === 'adulto_mayor'){
+    const tareas = await Tareas.find({ id_adulto_mayor: id }).sort(
       "createdAt"
     );
-    if (!tareas) {
-      throw new NotFoundError(`No se encontro tareas para el usuario con el id ${id}`);
-    }
+    res.status(StatusCodes.OK).json({ tareas, count: tareas.length });
   }
-  res.status(StatusCodes.OK).json({ tareas, count: tareas.length });
+  else if(tipo === 'voluntario'){
+    const tareas = await Tareas.find({ id_voluntario: id }).sort(
+      "createdAt"
+    );
+    res.status(StatusCodes.OK).json({ tareas, count: tareas.length });
+  }
+  else{
+    throw new BadRequestError("Tipo de usuario no valido");
+  }
 };
 
 const getSingleTarea = async (req, res) => {
