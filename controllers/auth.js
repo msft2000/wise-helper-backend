@@ -3,7 +3,7 @@ const Tarea = require("../models/Tarea");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const { BadRequestError, UnauthenticatedError,NotFoundError } = require("../errors");
 
 const register = async (req, res) => {
   const user = await User.create({ ...req.body });
