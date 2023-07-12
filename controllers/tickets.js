@@ -59,11 +59,27 @@ const addAdminMessage = async (req, res) => {
     res.status(StatusCodes.OK).json({ addAdminMessage });
 }
 
+const deleteTicket = async (req, res) => {
+    const { id: _id } = req.params;
+    const ticket = await TicketSoporte.findByIdAndRemove(_id);
+    if (!ticket) {
+        const findTicket = await TicketSoporte.findOne({ _id });
+        if (!findTicket) {
+            throw new NotFoundError(`No se encontro ticket con id ${_id}`);
+        }else{
+
+            throw new BadRequestError(`No se pudo eliminar el ticket`);
+        }
+    }
+    res.status(StatusCodes.OK).json({ ticket });
+}
+
 module.exports = {
     createTicket,
     getTicketsByUser,
     getTicketsByAdmin,
     getSingleTicket,
     addMensajeUsuario,
-    addAdminMessage
+    addAdminMessage,
+    deleteTicket
 };
