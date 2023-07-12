@@ -8,14 +8,16 @@ const {
   updateUser,
   deleteUser,
   getAllUsers,
+  UploadImage
 } = require("../controllers/auth");
 
-router.patch("/update/:id", updateUser);
 router.post("/register", register);
 router.post("/login", login);
+router.patch("/update/:id", updateUser);
 router.get("/user/:id", getSingleUser);
-router.post("/calificacion", agregateCalificacion);
 router.delete("/delete/:id", deleteUser);
+router.post("/calificacion", agregateCalificacion);
 router.get("/all", getAllUsers);
+router.post("/img-upload", UploadImage);
 
 module.exports = router;

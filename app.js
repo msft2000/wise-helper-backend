@@ -1,7 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
 
-
 // Extra security packages
 const helmet = require("helmet");
 const cors = require("cors");
@@ -15,6 +14,18 @@ const swaggerDocument = YAML.load("./WISEHELPER.yml");
 
 const express = require("express");
 const app = express();
+
+//File upload
+
+const fileUpload = require("express-fileupload");
+
+//Cloudinary
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 //connect to db
 const connectDB = require("./db/connect");
@@ -31,20 +42,21 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 
 app.set("trust proxy", 1);
 app.use(
-    rateLimit({
-        windowMs: 15 * 60 * 1000,
-        max: 100,
-        standarHeaders: true,
-        legacyHeaders: true,
-    })
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standarHeaders: true,
+    legacyHeaders: true,
+  })
 );
 app.use(express.json());
+app.use(fileUpload({ useTempFiles: true }));
 app.use(helmet());
 app.use(cors());
 app.use(xss());
 
 app.get("/", (req, res) => {
-    res.send("<h1>Wise Helper API</h1> <a href='/api-docs'>Documentation</a>");
+  res.send("<h1>Wise Helper API</h1> <a href='/api-docs'>Documentation</a>");
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -60,14 +72,12 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 3000;
 
 const start = async () => {
-    try {
-        await connectDB(process.env.MONGO_URI);
-        app.listen(port, () =>
-            console.log(`Server is listening on port ${port}...`)
-        );
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, () => console.log(`Server is listening on port ${port}...`));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 start();

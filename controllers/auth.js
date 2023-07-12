@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const Tarea = require("../models/Tarea");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
@@ -42,7 +44,10 @@ const getSingleUser = async (req, res) => {
 
 const agregateCalificacion = async (req, res) => {
   const { id_destino, id_origen, calificacion, comentario } = req.body;
-  const user = await User.findOneAndUpdate({ _id: id_destino }, { $push: { calificaciones: { id_origen, calificacion, comentario } } });
+  const user = await User.findOneAndUpdate(
+    { _id: id_destino },
+    { $push: { calificaciones: { id_origen, calificacion, comentario } } }
+  );
   if (!user) {
     throw new NotFoundError(`No se pudo agregar el comentario intente denuevo`);
   }
@@ -72,19 +77,28 @@ const deleteUser = async (req, res) => {
   // if (!user) {
   //   throw new NotFoundError(`No se encontro usuario con id ${id}`);
   // }
-  if(user.tipo === 'adulto_mayor'){
+  if (user.tipo === "adulto_mayor") {
     const tareas = await Tarea.find({ id_adulto_mayor: id });
     if (tareas.length > 0) {
       await Tarea.deleteMany({ id_adulto_mayor: id });
     }
   }
-  
+
   res.status(StatusCodes.OK).send({ user });
 };
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
   res.status(StatusCodes.OK).json({ users });
+};
+
+const UploadImage = async (req, res) => {
+  const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+    use_filename: true,
+    folder: "file-upload",
+  });
+  fs.unlinkSync(req.files.image.tempFilePath);
+  return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 };
 
 module.exports = {
@@ -95,4 +109,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getAllUsers,
+  UploadImage,
 };
