@@ -16,7 +16,6 @@ const TicketSoporteSchema = new mongoose.Schema(
       type: String,
       required: [true, "Por favor ingrese un estado"],
       trim: true,
-      enum: ["Activo", "En Proceso", "Finalizado"],
     },
     id_usuario: {
       type: String,

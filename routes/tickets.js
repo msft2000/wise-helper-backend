@@ -7,12 +7,14 @@ const {
     getSingleTicket,
     addMensajeUsuario,
     addAdminMessage,
-    deleteTicket
+    deleteTicket,
+    updateTicket
 } = require("../controllers/tickets");
 
 router.post("/create", createTicket);
 router.get("/get-tickets-by-user/:id", getTicketsByUser);
 router.get("/get-single-ticket/:id", getSingleTicket);
+router.patch("/update/:id", updateTicket);
 router.delete("/delete/:id", deleteTicket);
 router.get("/get-tickets-by-admin", getTicketsByAdmin);
 router.patch("/add-mensaje-usuario", addMensajeUsuario);
