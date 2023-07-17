@@ -51,7 +51,20 @@ const agregateCalificacion = async (req, res) => {
   if (!user) {
     throw new NotFoundError(`No se pudo agregar el comentario intente denuevo`);
   }
-  res.status(StatusCodes.OK).json({ user });
+  const calificaciones = user.calificaciones;
+  let calificacionPromedio = calificaciones.reduce(
+    (acc, calificacion) => acc + calificacion.calificacion,
+    0
+  );
+  const calificacionPromedioFinal = calificacionPromedio / calificaciones.length;
+  const userCalificado = await User.findOneAndUpdate(
+    { _id: id_destino },
+    { calificacion_general: calificacionPromedioFinal }
+  );
+  if (!userCalificado) {
+    throw new BadRequestError(`No se pudo agregar el comentario intente denuevo`);
+  }
+  res.status(StatusCodes.OK).json({ userCalificado });
 };
 
 const updateUser = async (req, res) => {
